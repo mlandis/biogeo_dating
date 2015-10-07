@@ -1,0 +1,7 @@
+under_prior = false
+use_atlas = true
+use_fossil = false
+base_tree_fn = "m50_24.SCL"
+base_data_fn = "m50_24.f"
+source("./sim/quick_tip.Rev")
+q()

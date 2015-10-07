@@ -1,0 +1,20 @@
+# make model
+mdl = model(tau)
+
+# monitors
+mn[mni++] = mnScreen(height_bg, root_age, b_short, b_med, b_long, printgen=100)
+mn[mni++] = mnModel(filename=out_fp+out_str+".params.txt",printgen=10)
+mn[mni++] = mnFile(tau,filename=out_fp+out_str+".tre",printgen=10)
+
+# mcmc
+my_mcmc = mcmc(mdl,mn,mv)
+n_gen=15000
+burn=1000
+#under_prior = true
+if (!under_prior) {
+    my_mcmc.burnin(burn, 50)
+    my_mcmc.run(n_gen,false)
+} else {
+    my_mcmc.run(n_gen,true)
+}
+

@@ -1,0 +1,273 @@
+#NEXUS
+
+BEGIN DATA;
+
+	DIMENSIONS NTAX=229 NCHAR=1;
+	FORMAT DATATYPE=Standard SYMBOLS= "0123456789ABCDEFGHIJKLMNO" MISSING=? GAP= -;
+	
+	CHARLABELS
+		[1]	'area'
+	;
+	
+	STATELABELS
+		1
+		[0] 'SAm_N 0'
+		[1] 'SAm_E 1'
+		[2] 'SAm_S 2'
+		[3] 'NAm_NW 3'
+		[4] 'NAm_SE 4'
+		[5] 'NAm_NE 5'
+		[6] 'NAm_SW 6'
+		[7] 'Grn 7'
+		[8] 'Eur 8'
+		[9] 'As_C 9'
+		[10] 'As_E A'
+		[11] 'As_SE B'
+		[12] 'As_NE C'
+		[13] 'Afr_W D'
+		[14] 'Afr_S E'
+		[15] 'Afr_E F'
+		[16] 'Afr_N G'
+		[17] 'Aus_N H'
+		[18] 'Aus_S I'
+		[19] 'Ind J'
+		[20] 'Mdg K'
+		[21] 'Ant_W L'
+		[22] 'Ant_E M'
+		[23] 'Mly N'
+		[24] 'NZ O'
+		,
+	;
+
+MATRIX
+	Acanthochelys_macrocephala        1
+	Acanthochelys_pallidipectoris     2
+	Acanthochelys_radiolata           (0 1)
+	Acanthochelys_spixii              2
+	Amyda_cartilaginea                (B N)
+	Apalone_ferox                     4
+	Apalone_mutica                    4
+	Apalone_spinifera                 (4 6)
+	Astrochelys_radiata               K
+	Astrochelys_yniphora              K                                     
+	Batagur_affinis                   (B N)
+	Batagur_baska                     (B N)  
+	Callagur_borneoensis              N
+	Caretta_caretta                   -
+	Carettochelys_insculpta           (H N)
+	Chelodina_longicollis             (H I)
+	Chelodina_oblonga                 I
+	Chelodina_rugosa                  H
+	Chelonia_mydas                    -
+	Chelonoidis_carbonaria            (0 1)
+	Chelonoidis_chilensis             2
+	Chelonoidis_denticulata           (0 1) 
+	Chelonoidis_nigra                 0
+	Chelus_fimbriatus                 0
+	Chelydra_serpentina               (3 4 5 6)
+	Chersina_angulata                 E
+	Chitra_chitra                     J
+	Chitra_indica                     J
+	Chitra_vandijki                   B
+	Chrysemys_picta                   (3 4 5 6)
+	Clemmys_guttata                   (4 5)                 
+	Cuora_amboinensis                 (B N)
+	Cuora_aurocapitata                A
+	Cuora_flavomarginata              A
+	Cuora_galbinifrons                B
+	Cuora_mccordi                     B
+	Cuora_mouhotii                    B
+	Cuora_pani                        B
+	Cuora_trifasciata                 B
+	Cuora_yunnanensis                 A
+	Cuora_zhoui                       A
+	Cyclanorbis_elegans               D
+	Cyclanorbis_senegalensis          D
+	Cyclemys_atripons                 B
+	Cyclemys_bellii                   B
+	Cyclemys_dentata                  (B N)
+	Cyclemys_enigmatica               N
+	Cyclemys_fusca                    B
+	Cyclemys_gemeli                   J
+	Cyclemys_oldhamii                 B
+	Cyclemys_ovata                    (B N)
+	Cyclemys_pulchristriata           B
+	Cyclemys_tcheponensis             B
+	Cycloderma_aubryi                 F
+	Cycloderma_frenatum               F
+	Deirochelys_reticularia           4
+	Dermatemys_mawii                  6
+	Dermochelys_coriacea              -
+	Dipsochelys_arnoldi               K
+	Dipsochelys_dussumieri            K
+	Dipsochelys_hololissa             K
+	Dogania_subplana                  N
+	Elseya_dentata                    H
+	Elseya_georgesi                   H
+	Elseya_latisternum                H
+	Elseya_purvisi                    H
+	Elusor_macrurus                   H
+	Emydoidea_blandingii              5
+	Emydura_macquarii                 (H I)
+	Emydura_subglobosa                (H N)
+	Emys_marmorata                    6
+	Emys_orbicularis                  8
+	Emys_trinacris                    8
+	Eretmochelys_imbricata            -
+	Erymnochelys_madagascariensis     K
+	Geochelone_elegans                J
+	Geochelone_platynota              B
+	Geochelone_sulcata                (D F G)
+	Geoclemys_hamiltonii              B
+	Geoemyda_japonica                 A
+	Geoemyda_spengleri                B
+	Glyptemys_insculpta               (4 5)
+	Glyptemys_muhlenbergii            (4 5)
+	Gopherus_agassizii                6
+	Gopherus_berlandieri              6
+	Gopherus_flavomarginatus          6
+	Gopherus_polyphemus               4
+	Graptemys_barbouri                4
+	Graptemys_caglei                  6
+	Graptemys_flavimaculata           4
+	Graptemys_geographica             (4 5)
+	Graptemys_nigrinoda               4
+	Graptemys_oculifera               4
+	Graptemys_ouachitensis            4
+	Graptemys_pseudogeographica       (4 5)
+	Graptemys_pulchra                 4
+	Graptemys_versa                   6
+	Hardella_thurjii                  J
+	Heosemys_annandalii               B
+	Heosemys_depressa                 B
+	Heosemys_grandis                  (B N)
+	Heosemys_spinosa                  N
+	Homopus_areolatus                 E
+	Homopus_boulengeri                E
+	Homopus_femoralis                 E
+	Homopus_signatus                  E
+	Hydromedusa_tectifera             2
+	Indotestudo_elongata              B
+	Indotestudo_forstenii             (B N)
+	Indotestudo_travancorica          J
+	Kachuga_dhongoka                  J
+	Kachuga_kachuga                   J
+	Kachuga_sylhetensis               J
+	Kachuga_trivittata                B
+	Kinixys_belliana                  (D E F)
+	Kinixys_erosa                     D
+	Kinixys_homeana                   D
+	Kinixys_natalensis                E
+	Kinixys_spekii                    (E F)
+	Kinosternon_baurii                4
+	Kinosternon_flavescens            (4 6)
+	Lepidochelys_kempii               -
+	Lepidochelys_olivacea             -
+	Leucocephalon_yuwonoi             N
+	Lissemys_punctata                 (B J)
+	Lissemys_scutata                  B
+	Macrochelys_temminckii            4
+	Malaclemys_terrapin               4
+	Malacochersus_tornieri            E
+	Malayemys_subtrijuga              (B N)
+	Manouria_emys                     (J B N)
+	Manouria_impressa                 B
+	Mauremys_annamensis               B
+	Mauremys_caspica                  (8 9)
+	Mauremys_japonica                 A
+	Mauremys_leprosa                  8
+	Mauremys_megalocephala            A
+	Mauremys_mutica                   (A B)
+	Mauremys_nigricans                A
+	Mauremys_reevesii                 A
+	Mauremys_rivulata                 (8 9)
+	Mauremys_sinensis                 (A B)
+	Melanochelys_trijuga              (J B)
+	Mesoclemmys_gibba                 (0 1)
+	Mesoclemmys_hogei                 1
+	Mesoclemmys_nasutus               (0 1)
+	Morenia_ocellata                  B
+	Natator_depressus                 -
+	Nilssonia_formosa                 B
+	Nilssonia_gangeticus              (B J)
+	Nilssonia_hurum                   B
+	Nilssonia_leithii                 B
+	Nilssonia_nigricans               B
+	Notochelys_platynota              N
+	Orlitia_borneensis                N
+	Palea_steindachneri               (A B)
+	Pangshura_smithii                 B
+	Pangshura_tecta                   (B J)
+	Pangshura_tentoria                (B J)
+	Pelochelys_bibroni                N
+	Pelochelys_cantorii               (B J N)
+	Pelodiscus_axenaria               A
+	Pelodiscus_sinensis               (A B)
+	Pelomedusa_subrufa                (D E F K)
+	Peltocephalus_dumeriliana         (0 1)
+	Pelusios_gabonensis               D
+	Pelusios_sinuatus                 (E F)
+	Pelusios_williamsi                F
+	Phrynops_geoffroanus              (0 1)
+	Phrynops_hilarii                  (1 2)
+	Phrynops_williamsi                1
+	Platemys_platycephala             0
+	Platysternon_megacephalum         B
+	Podocnemis_erythrocephala         0
+	Podocnemis_expansa                (0 1)
+	Podocnemis_lewyana                0
+	Podocnemis_sextuberculata         0
+	Podocnemis_unifilis               0
+	Podocnemis_vogli                  0
+	Psammobates_geometricus           E
+	Psammobates_oculifer              E
+	Psammobates_pardalis              (E F)
+	Psammobates_tentorius             E
+	Pseudemydura_umbrina              I
+	Pseudemys_alabamensis             4
+	Pseudemys_concinna                (4 5 6)
+	Pseudemys_gorzugi                 6
+	Pseudemys_nelsoni                 4
+	Pseudemys_peninsularis            4
+	Pseudemys_rubriventris            4
+	Pseudemys_suwanniensis            4
+	Pseudemys_texana                  6
+	Pyxis_arachnoides                 K
+	Pyxis_planicauda                  K
+	Rafetus_euphraticus               (8 9)
+	Rheodytes_leukops                 H
+	Rhinoclemmys_annulata             0
+	Rhinoclemmys_areolata             6
+	Rhinoclemmys_diademata            0
+	Rhinoclemmys_funerea              6
+	Rhinoclemmys_melanosterna         (0 6)
+	Rhinoclemmys_nasuta               0
+	Rhinoclemmys_pulcherrima          6
+	Rhinoclemmys_punctularia          0
+	Rhinoclemmys_rubida               6
+	Sacalia_bealei                    A
+	Sacalia_quadriocellata            B
+	Siebenrockiella_crassicollis      N
+	Siebenrockiella_leytensis         N
+	Staurotypus_triporcatus           6
+	Sternotherus_odoratus             (4 5)
+	Terrapene_carolina                (4 5 6)
+	Terrapene_coahuila                6
+	Terrapene_nelsoni                 6
+	Terrapene_ornata                  (4 6)
+	Testudo_graeca                    (8 9 G)
+	Testudo_hermanni                  8
+	Testudo_horsfieldii               9
+	Testudo_kleinmanni                G
+	Testudo_marginata                 8
+	Trachemys_decorata                4
+	Trachemys_decussata               4
+	Trachemys_dorbigni                (1 2)
+	Trachemys_gaigeae                 6
+	Trachemys_scripta                 (4 6)
+	Trachemys_stejnegeri              4
+	Trachemys_terrapen                4
+	Trionyx_triunguis                 (D E F G)
+	Vijayachelys_silvatica            J
+	;
+ENDBLOCK;

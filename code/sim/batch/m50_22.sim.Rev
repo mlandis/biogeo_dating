@@ -1,0 +1,3 @@
+base_fn = "m50_22.f"
+source("./sim/sim_tip.Rev")
+q()

@@ -1,0 +1,50 @@
+#seed(1,1)
+
+base_fp = "/Users/mlandis/projects/biogeo_dating/"
+code_fp  = base_fp + "code/sim/"
+in_fp    = base_fp + "data/sim/"
+out_fp   = base_fp + "output/"
+
+tree_fn  = in_fp + base_tree_fn + ".tre"
+mol_fn   = in_fp + base_data_fn + ".mol.nex"
+bg_fn    = in_fp + base_data_fn + ".bg.nex"
+
+sim_str = ""
+if (exists("job_id")) 
+{
+    sim_str = "." + job_id
+}
+
+use_bg    = true
+use_mol   = true
+use_inf   = true
+
+# manage sim inf settings
+overwrite = !true
+if (use_atlas) {
+	use_atlas_str = ".atlas1"
+} else {
+	use_atlas_str = ".atlas0"
+}
+
+# move/monitor index
+mvi = 1
+mni = 1
+
+source(code_fp + "sstree_module.Rev")
+if (use_bg) {
+    source(code_fp + "bg_module.Rev")
+    d_bg = readDiscreteCharacterData(bg_fn)
+    m_bg.clamp(d_bg)
+}
+if (use_mol) {
+    source(code_fp + "mol_module.Rev")
+    d_mol = readDiscreteCharacterData(mol_fn)
+    m_mol.clamp(d_mol)
+}
+if (use_inf) {
+    out_str = base_tree_fn + use_atlas_str + sim_str
+    source(code_fp + "date_inf.Rev")
+}
+
+"done!"

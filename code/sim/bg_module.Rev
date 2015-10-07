@@ -1,0 +1,109 @@
+############
+# settings #
+############
+
+# io
+atlas_fn   <- in_fp + "earth25.short.atlas.txt"
+atlas_med <- readAtlas(in_fp + "earth25.med.atlas.txt")
+atlas_short <- readAtlas(in_fp + "earth25.short.atlas.txt")
+
+# bg epoch
+n_bg_states    <- atlas_short.nAreas() 
+n_bg_elements  <- n_bg_states*(n_bg_states-1)/2
+n_bg_sites     <- 1
+n_epochs       <- atlas_short.nEpochs()
+
+
+############################
+# biogeography epoch model #
+############################
+
+if (use_atlas) {
+    beta_pr <- v(1,1,1)
+    b_base ~ dnDirichlet( beta_pr )
+    b_base.setValue(simplex(1000,10,1))
+    
+    b_short := b_base[1]
+    b_med   := b_base[2]
+    b_long  := b_base[3]
+    b := b_base
+    b_tmp := b_short + b_med + b_long
+
+    mv[mvi++] = mvSimplexElementScale(b_base, alpha=30., weight=10.0)
+} else {
+    b := simplex( [0.,0.,1.] )
+    b_short   := b[1]
+    b_med   := b[2]
+    b_long  := b[3]
+    b_tmp := b_short + b_med + b_long
+}
+
+
+# convert absolute ages to concentration prior
+ea_pr      <- atlas_short.epochTimes()
+for (i in 1:n_epochs) {
+    epoch_ages[i] := ea_pr[i]
+}
+
+
+# epoch rate matrices
+sf_atlas_short      <- simplex(rep(1.,n_bg_states))
+er_atlas_short_mtx  <- atlas_short.getValues("dispersal")
+er_atlas_med_mtx    <- atlas_med.getValues("dispersal")
+er_atlas_long       <- simplex(rep(1.,n_bg_elements))
+
+
+# convert to upper triangle for GTR
+for (i in 1:n_epochs) {
+    er_atlas_short_sx[i] <- vectorFlatten(er_atlas_short_mtx[i])
+    er_atlas_med_sx[i] <- vectorFlatten(er_atlas_med_mtx[i])
+}
+
+# make epochal rate matrices
+for (i in 1:n_epochs) {
+
+	if (use_atlas) {
+        er_atlas_long_sx[i] <- er_atlas_long
+		bf_bg[i]            <- sf_atlas_short
+
+        # rescale simplices so they are 0,1-valued
+        er_scale_short[i] <- er_atlas_short_sx[i] / abs(max(er_atlas_short_sx[i]))
+        er_scale_med[i]   <- er_atlas_med_sx[i]   / abs(max(er_atlas_med_sx[i]))
+        er_scale_long[i]  <- er_atlas_long_sx[i]  / abs(max(er_atlas_long_sx[i]))
+
+        # make rate mixture
+        er_bg[i] := simplex( b_short*er_scale_short[i] + b_med*er_scale_med[i] + b_long*er_scale_long[i] )
+        rm_bg[i] := fnGTR(er_bg[i],bf_bg[i])
+
+	} else {
+		bf_bg[i] <- sf_atlas_short
+		rm_bg[i] := fnJC(n_bg_states)
+	}
+}
+
+
+# epoch clocks
+for (i in 1:n_epochs) {
+    epoch_rates[i] := 1.
+}
+
+for (i in 1:n_branches) {
+    brbgrate[i] <- 1.
+}
+
+for (i in 1:n_branches) {
+    br_bg_clock[i] := brbgrate[i] * clock_bg * b_tmp
+}
+
+# epoch rate generator
+q_bg := fnEpoch(Q=rm_bg, times=epoch_ages, rates=epoch_rates)
+
+# ctmc
+rf <- bf_bg[1] 
+m_bg ~ dnPhyloCTMC(tree=tau,Q=q_bg,rootFrequencies=rf,branchRates=br_bg_clock,nSites=n_bg_sites,type="Standard")
+
+if (overwrite) {
+	writeNexus(m_bg, filename=bg_fn)
+	"biogeography data written to " + bg_fn
+}
+

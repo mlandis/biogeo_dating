@@ -1,0 +1,33 @@
+############
+# settings #
+############
+
+# mol evol
+n_mol_states   <- 4
+n_mol_elements <- n_mol_states*(n_mol_states-1)/2
+n_mol_sites    <- 500
+
+
+#############
+# DNA model #
+#############
+
+# mol rate matrix
+er_mol_pr <- rep(10.,n_mol_elements)
+bf_mol_pr <- rep(10.,n_mol_states)
+er_mol ~ dnDirichlet(er_mol_pr)
+bf_mol ~ dnDirichlet(bf_mol_pr)
+rm_mol := fnGTR(er_mol, bf_mol)
+
+# ctmc
+m_mol ~ dnPhyloCTMC(tree=tau,Q=rm_mol,rootFrequencies=bf_mol,branchRates=clock_mol,nSites=n_mol_sites,type="DNA")
+
+if (overwrite) {
+	writeNexus(m_mol,filename=mol_fn)
+	"molecular data written to " + mol_fn
+}
+
+mv[mvi++] = mvSimplex(x=er_mol, alpha=80.0, offset=1.0, numCats=6, tune=true, weight=2)
+mv[mvi++] = mvSimplexElementScale(x=er_mol, alpha=30.0, tune=true, weight=4)
+mv[mvi++] = mvSimplex(x=bf_mol, alpha=80.0, offset=1.0, numCats=4, tune=true, weight=2)
+mv[mvi++] = mvSimplexElementScale(x=bf_mol, alpha=30.0, tune=true, weight=4)

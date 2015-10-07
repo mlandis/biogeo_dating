@@ -1,0 +1,37 @@
+code_fp = "/Users/mlandis/projects/biogeo_dating/code/sim/"
+in_fp = "/Users/mlandis/projects/biogeo_dating/data/sim/"
+
+ts_prefix = ""
+if (exists("disp_name")) {
+    ts_prefix = disp_name + "."
+}
+
+tree_fn = in_fp + base_fn + ".tre"
+mol_fn = in_fp + base_fn + ".mol.nex"
+morph_fn = in_fp + base_fn + ".morph.nex"
+bg_fn = in_fp + ts_prefix + base_fn + ".bg.nex"
+
+use_bg = true
+use_mol = true
+use_morph = true
+use_inf = true
+use_atlas = true
+use_fossil = true
+
+# manage sim inf settings
+overwrite = true
+rescale = false
+
+# create and simulate under model
+source(code_fp + "sstree_module.Rev")
+if (use_bg) {
+	source(code_fp + "bg_module.Rev")
+}
+if (use_mol) {
+	source(code_fp + "mol_module.Rev")
+}
+if (use_morph) {
+	source(code_fp + "morph_module.Rev")
+}
+
+"done!"

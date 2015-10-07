@@ -1,0 +1,13 @@
+# monitors
+mn[mni++] = mnScreen(evol, root_age, ucln_sd, b_short, b_med, b_long, printgen=1)
+mn[mni++] = mnFile(age_pleuro,age_crypto,height_bg,clock_bg,s_bg,height_mol,clock_mol,b_short,b_med,b_long,root_age,evol,ucln_sd,filename=out_fp+out_str+".params.txt",printgen=1)
+mn[mni++] = mnModel(filename=out_fp+out_str+".mdl.txt",printgen=5)
+mn[mni++] = mnFile(tau,filename=out_fp+out_str+".unit.tre",printgen=5)
+mn[mni++] = mnJointConditionalAncestralState(tree=tau, ctmc=m_bg, filename=out_fp+out_str+".states.txt", type="Standard", printgen=5, separator=TAB, append=false, withTips=true, withStartStates=true)
+
+#model
+mdl = model(tau)
+
+# mcmc
+my_mcmc = mcmc(mdl,mn,mv)
+my_mcmc.run(25000)

@@ -1,0 +1,113 @@
+############
+# settings #
+############
+mvi=1
+
+##############
+# tree model #
+##############
+
+# tree
+tau_tmp 	<- readTrees(tree_fn)[1]
+names 		=  tau_tmp.names()
+n_species 	<- tau_tmp.ntips()
+n_branches	<- 2 * n_species - 2
+n_nodes     <- tau_tmp.nnodes()
+
+# tree ages
+tau_rescale <- 250.
+tau_tmp.rescale( 1.0 / tau_tmp.rootAge() )
+max_tip_age <- 0.
+min_tip_age <- tau_rescale
+
+for (i in 1:n_species) {
+    tip_ages[i] = tau_tmp.nodeAge(i) * tau_rescale
+    if (max_tip_age < tip_ages[i]) {
+        max_tip_age <- tip_ages[i]
+    } else if (min_tip_age > tip_ages[i]) {
+        min_tip_age <- tip_ages[i]
+    }
+    if (tau_tmp.nodeAge(i) < 1e-4) {
+        tip_ages[i] = 0.
+    }
+}
+tau_true <- treeScale(tau_tmp, tau_rescale, tip_ages)
+
+# evol length
+evol ~ dnUnif(0,1000)
+evol.setValue(2.5)
+
+mv[mvi++] = mvScale(evol, lambda=0.1, weight=n_branches/10, tune=true)
+mv[mvi++] = mvScale(evol, lambda=0.5, weight=n_branches/30, tune=false)
+mv[mvi++] = mvSlide(evol, delta=0.5, weight=n_branches/20, tune=true)
+
+# ages
+root_age 	~ dnUnif(max_tip_age,1000)
+root_age.setValue(250.)
+
+mv[mvi++] = mvScale(root_age, lambda=0.2, weight=n_branches/10, tune=true)
+mv[mvi++] = mvScale(root_age, lambda=2.0, weight=n_branches/30, tune=false)
+mv[mvi++] = mvSlide(root_age, delta=5.0, weight=n_branches/20, tune=true)
+
+# rates
+clock_sd <- 2
+clock_mu <- ln(1) - 0.5 * clock_sd^2
+
+s_bg ~ dnUnif(-3,3)
+s_morph ~ dnUnif(-3,3)
+
+s_bg.setValue(1.)
+s_morph.setValue(0.)
+
+clock_mol    := evol / root_age
+clock_bg     := clock_mol * 10^s_bg
+
+height_mol   := clock_mol * root_age
+height_bg    := clock_bg * root_age
+
+if (use_bg) {
+    mv[mvi++] = mvSlide(s_bg,weight=n_branches/30, tune=true)
+}
+
+# tree
+tau_unit ~ dnUniformTimeTree(origin=1., names=names)
+tau_unit.setValue( tau_tmp )
+tau := treeScale(scale=root_age, tree=tau_unit, tipAges=tip_ages)
+
+mv[mvi++] = mvNodeTimeSlideUniform(tau_unit, n_branches/3)
+mv[mvi++] = mvNodeTimeSlideBeta(tau_unit, delta=40.0, offset=2.0, tune=true, n_branches/3)
+mv[mvi++] = mvNodeTimeSlideBeta(tau_unit, delta=20.0, offset=2.0, tune=false, n_branches/5)
+mv[mvi++] = mvSubtreeScale(tau_unit, weight=n_branches/5)
+
+
+# tree stats
+n_ages = n_nodes
+for (i in 1:n_nodes) {
+    age_diff[i] := tau.nodeAge(i) - tau_true.nodeAge(i)
+    abs_age[i] := abs(age_diff[i])
+    age2[i] := age_diff[i]*age_diff[i]
+    age_diff_norm[i] := age_diff[i] / (tau_true.nodeAge(i) + 1e-12)
+    age2_norm[i] := age_diff_norm[i] * age_diff_norm[i]
+}
+
+for (i in 1:n_nodes) {
+    for (j in 1:n_species) {
+        if (tau.parent(j) == i && tip_ages[j] > 0.) {
+            age_diff[i]     <- abs(0.)
+            abs_age[i] <- abs(0.)
+            age2[i]    <- abs(0.)
+            age_diff_norm[i] <- abs(0.)
+            age2_norm[i] <- abs(0.)
+            n_ages     -= 1
+        }
+    }
+}
+
+age_sum            := sum(abs_age) / n_ages
+age2_sum           := sum(age2) / n_ages
+age2_sum_sqrt      := sqrt( abs(age2_sum) )
+age_diff_norm_sum  := sum(age_diff_norm) / n_ages
+age2_norm_sum      := sum(age2_norm) / n_ages
+age2_norm_sum_sqrt := sqrt( abs(age_diff_norm_sum) )
+true_root_age      := tau_true.rootAge()
+
