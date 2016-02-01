@@ -1,11 +1,9 @@
 base_tree_fn    = "turtle.185.tre"
-use_atlas       = true
-use_inf         = true
-use_bg          = true
-use_mol         = true
-use_beta_prior  = true
 base_str        = "turtle.g1.beta"
-rv = floor(runif(1,100000,999999)[1])
-base_str = base_str + "." + rv
+rv              = floor(runif(1,100000,999999)[1])
+base_str        = base_str + "." + rv
+
+use_atlas       = true
+use_beta_prior  = true
 
 source("turtle/quick_turtle.Rev")

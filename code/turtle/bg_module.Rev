@@ -1,73 +1,78 @@
-############
-# settings #
-############
 
-# io
-atlas_fn   <- in_fp + "earth25.short.atlas.txt"
-atlas_med <- readAtlas(in_fp + "earth25.med.atlas.txt")
-atlas_short <- readAtlas(in_fp + "earth25.short.atlas.txt")
+########
+# data #
+########
 
-# bg epoch
-n_bg_states    <- atlas_short.nAreas() 
+# read in vector of ages when epochs end (including 0, at present)
+epoch_ages <- readDataDelimitedFile(in_fp+"atlas/earth25.short.times.txt", type="Continuous", delimiter=",")[1]
+n_epochs       <- epoch_ages.size()
+
+# read in series of short-distance adjacency matrices
+for (i in 1:n_epochs) {
+    atlas_mtx_short[i] <- readDataDelimitedFile(in_fp+"atlas/earth25.short.atlas.matrix."+i+".txt", type="Continuous", delimiter=",")
+}
+
+# read in series of medium-distance adjacency matrices
+for (i in 1:n_epochs) {
+    atlas_mtx_med[i] <- readDataDelimitedFile(in_fp+"atlas/earth25.med.atlas.matrix."+i+".txt", type="Continuous", delimiter=",")
+}
+
+# read in biogeographic character matrix
+d_bg = readDiscreteCharacterData(bg_fn)
+n_bg_states    <- atlas_mtx_short[1].size()
 n_bg_elements  <- n_bg_states*(n_bg_states-1)/2
 n_bg_sites     <- 1
-n_epochs       <- atlas_short.nEpochs()
-
 
 ############################
 # biogeography epoch model #
 ############################
 
-
+# set up the dispersal mode prior, \beta
 if (use_atlas) {
     if (exists("use_beta_prior")) {
+        # informative dispersal mode weights, i.e. the +G, inf. model
         beta_pr <- v( 100., 10., 1. )
     } else {
+        # flat dispersal mode weights, i.e. the +G, flat model
         beta_pr <- v( 1., 1., 1. )
     }
-    b_base ~ dnDirichlet( beta_pr )
-    b_base.setValue(simplex(1,1,1))
-    
-    mv[mvi++] = mvSimplexElementScale(b_base, alpha=20., weight=10.0)
-    mv[mvi++] = mvSimplexElementScale(b_base, alpha=30., weight=20.0)
-    
-    b_short := b_base[1]
-    b_med   := b_base[2]
-    b_long  := b_base[3]
-    b       := b_base
-    b_tmp := b_short + b_med + b_long
+    # create the dispersal mode prior
+    b ~ dnDirichlet( beta_pr )
+  
+    # add parameter updates
+    mv[mvi++] = mvSimplexElementScale(b, alpha=20., weight=10.0)
+    mv[mvi++] = mvSimplexElementScale(b, alpha=30., weight=20.0)
+   
 } else {
+    # long-distance dispersal only, i.e. the -G model
     b := simplex( [0.,0.,1.] )
-    b_short   := b[1]
-    b_med   := b[2]
-    b_long  := b[3]
-    b_tmp := b_short + b_med + b_long
 }
 
-# epoch times
-# convert absolute ages to concentration prior
-ea_pr      <- atlas_short.epochTimes()
-for (i in 1:n_epochs) {
-    epoch_ages[i] := ea_pr[i]
-}
+# create named nodes to dispersal mode simplex elements for monitored output
+b_short := b[1]
+b_med   := b[2]
+b_long  := b[3]
 
-# epoch rate matrices
+# read in the epoch adjacency matrices
 sf_atlas_short <- simplex(rep(1.,n_bg_states))
-er_atlas_short_mtx  <- atlas_short.getValues("dispersal")
-er_atlas_med_mtx  <- atlas_med.getValues("dispersal")
+er_atlas_short_mtx <- atlas_mtx_short
+er_atlas_med_mtx <- atlas_mtx_med
 er_atlas_long <- simplex(rep(1.,n_bg_elements))
 
-# convert to upper triangle for GTR
+# convert each epoch into upper triangle for GTR
 for (i in 1:n_epochs) {
     er_atlas_short_sx[i] <- vectorFlatten(er_atlas_short_mtx[i])
     er_atlas_med_sx[i]   <- vectorFlatten(er_atlas_med_mtx[i])
 }
 
-# make epochal rate matrices
+# construct rate matrices per epoch
 for (i in 1:n_epochs) {
 
 	if (use_atlas) {
+        # long-distance dispersal rates are defined as constant over time
         er_atlas_long_sx[i] <- er_atlas_long
+
+        # stationary frequencies are defined as constant over time
 		bf_bg[i] <- sf_atlas_short
     
         # normalize to 1.
@@ -77,26 +82,32 @@ for (i in 1:n_epochs) {
 
         # make rate mixture
         er_bg[i] := simplex( b[1]*er_scale_short[i] + b[2]*er_scale_med[i] + b[3]*er_scale_long[i] )
-        rm_bg[i] := fnGTR(er_bg[i],bf_bg[i])
+        rm_bg[i] := fnGTR(exchangeRates=er_bg[i], baseFrequencies=bf_bg[i])
 
 	} else {
+        # dispersal rates between all areas are equal under the -G model
 		bf_bg[i] <- sf_atlas_short
-		rm_bg[i] := fnJC(n_bg_states)
+		rm_bg[i] := fnJC(numStates=n_bg_states)
 	}
 }
 
-
 # epoch clocks
-for (i in 1:n_epochs) {
-    epoch_rates[i] := 1. * b_tmp
-}
+epoch_rates <- rep(1., n_epochs)
 
 # epoch rate generator
-if (exists("use_bg_bh") == false) {
-    q_bg := fnEpoch(Q=rm_bg, times=epoch_ages, rates=epoch_rates)
-}
+q_bg := fnEpoch(Q=rm_bg, times=epoch_ages, rates=epoch_rates)
 
-# ctmc
-rf <- bf_bg[1] 
-m_bg ~ dnPhyloCTMC(tree=tau,Q=q_bg,rootFrequencies=rf,branchRates=clock_bg,nSites=n_bg_sites,type="Standard")
+# root state frequencies
+rf <- bf_bg[1]
+
+# create the biogeographic model
+m_bg ~ dnPhyloCTMC(tree=tau,
+                   Q=q_bg,
+                   rootFrequencies=rf,
+                   branchRates=clock_bg,
+                   nSites=n_bg_sites,
+                   type="Standard")
+
+# treat the biogeographic character matrix as observed
+m_bg.clamp(d_bg)
 

@@ -2,7 +2,7 @@
 base_mol_fn     = "turtle.207.cytb.nex"
 base_bg_fn 		= "turtle.229.bg.nex" 
 
-base_fp         = "/Users/mlandis/projects/biogeo_dating/"
+base_fp         = "/Users/mlandis/projects/gh_biogeo_dating/"
 code_fp         = base_fp + "code/turtle/"
 in_fp           = base_fp + "data/turtle/"
 out_fp          = base_fp + "output/"
@@ -16,16 +16,11 @@ mol_fn          = in_fp + base_mol_fn
 mvi = 1
 mni = 1
 
-source(code_fp + "sstree_module.Rev")
-if (use_bg) {
-    d_bg = readDiscreteCharacterData(bg_fn)
-	source(code_fp + "bg_module.Rev")
-    m_bg.clamp(d_bg)
-}
-if (use_mol) {
-	source(code_fp + "mol_module.Rev")
-}
-if (use_inf) {
-	source(code_fp + "date_inf.Rev")
-}
+# load model
+source(code_fp + "tree_module.Rev")
+source(code_fp + "bg_module.Rev")
+source(code_fp + "mol_module.Rev")
+
+# run mcmc
+source(code_fp + "mcmc.Rev")
 
