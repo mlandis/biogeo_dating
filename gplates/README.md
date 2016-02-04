@@ -44,3 +44,5 @@ Select Reconstruction -> Reconstruct to Time -> Enter 540
 Click the Play button
 
 Enjoy!
+
+![gplates](https://figshare.com/s/2a8329e06c6d11e587bd06ec4b8d1f61)
