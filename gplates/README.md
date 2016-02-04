@@ -5,7 +5,7 @@ Open "gplates_landis15.gproj" from within GPlates 1.5+ to load the paleogeograph
 Unfortunately, GPlates does not currently allow visualization settings to be saved in the .gproj file.
 To reproduce the appearance of https://figshare.com/s/2a8329e06c6d11e587bd06ec4b8d1f61, follow these instructions:
 
-Open the Layers panel (Windows->Show Layers).
+Open the Layers panel, Windows -> Show Layers
 
 Order the layers then modify them as instructed:
 
@@ -15,7 +15,7 @@ Order the layers then modify them as instructed:
 
 2. earth.n25.t26.med (Reconstructed Geometries)
   
-  -> do nothing
+  -> no changes
 
 3. earth.n25.t26.short (Resolved Topological Geometries)
   
@@ -33,12 +33,14 @@ Order the layers then modify them as instructed:
   
 6. Phanerozoic_EarthByte (Reconstruction Tree)
 
-  -> do nothing
+  -> no changes
 
-Load the "area_markers.sym" file (Features->Load Symbol File)
+Load the "area_markers.sym" file, Features -> Load Symbol File
 
 Select View -> Set Projection -> Mollweide
 
 Select Reconstruction -> Reconstruct to Time -> Enter 540
 
 Click the Play button
+
+Enjoy!
