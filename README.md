@@ -2,7 +2,7 @@ Biogeographic dating of speciation times using paleogeographically informed proc
 
 -------
 
-`code` contains [RevBayes](github.com/revbayes/revbayes) scripts for biogeographic dating for simulated and empirical data.
+`code` contains [RevBayes](http://revbayes.com) scripts for biogeographic dating for simulated and empirical data.
 
 `data` contains what was used in the original manuscript
 
