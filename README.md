@@ -6,4 +6,4 @@ Biogeographic dating of speciation times using paleogeographically informed proc
 
 `data` contains what was used in the original manuscript
 
-`gplates` contains the basic files needed to reproduce the paleogeographic animation
+`gplates` contains animation files for GPlates 1.5
