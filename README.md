@@ -6,6 +6,11 @@ Biogeographic dating of speciation times using paleogeographically informed proc
 
 `data` contains what was used in the original manuscript
 
-`gplates` contains animation files for GPlates 1.5
+`gplates` contains raw animation files for GPlates 1.5 and an animated gif
 
-![gplates](https://raw.githubusercontent.com/mlandis/biogeo_dating/master/gplates/paleo_dispersal_graph_landis15.gif)
+-------
+
+Papers describing this project:
+
+Landis, Michael J. "Biogeographic dating of speciation times using paleogeographically informed processes." bioRxiv (2015): 028738. [[link](http://biorxiv.org/content/early/2015/10/08/028738)]
+
