@@ -1,11 +1,13 @@
 Paleogeographical dispersal graph from Landis (2015) in GPlates
 --------
 
-Open `gplates_landis15.gproj' from within GPlates 1.5+ to load the paleogeographical dispersal graph.
+Open "gplates_landis15.gproj" from within GPlates 1.5+ to load the paleogeographical dispersal graph.
 Unfortunately, GPlates does not currently allow visualization settings to be saved in the .gproj file.
-To reproduce the appearance of XXX
+To reproduce the appearance of https://figshare.com/s/2a8329e06c6d11e587bd06ec4b8d1f61, follow these instructions:
 
-Open the Layers panel (Windows->Show Layers). Order the layers then modify them as instructed:
+Open the Layers panel (Windows->Show Layers).
+
+Order the layers then modify them as instructed:
 
 1. earth.n25.t26.short (Reconstructed Geometries)
   
@@ -35,3 +37,8 @@ Open the Layers panel (Windows->Show Layers). Order the layers then modify them 
 
 Load the "area_markers.sym" file (Features->Load Symbol File)
 
+Select View -> Set Projection -> Mollweide
+
+Select Reconstruction -> Reconstruct to Time -> Enter 540
+
+Click the Play button
