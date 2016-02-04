@@ -1,7 +1,0 @@
-under_prior = false
-use_atlas = true
-use_fossil = true
-base_tree_fn = "m50_30.f"
-base_data_fn = "m50_30.f"
-source("./sim/quick_tip.Rev")
-q()
