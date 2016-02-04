@@ -1,6 +1,6 @@
 #seed(1,1)
 
-base_fp = "/Users/mlandis/projects/biogeo_dating/"
+base_fp = "/Users/mlandis/projects/gh_biogeo_dating/"
 code_fp  = base_fp + "code/sim/"
 in_fp    = base_fp + "data/sim/"
 out_fp   = base_fp + "output/"
@@ -31,7 +31,7 @@ if (use_atlas) {
 mvi = 1
 mni = 1
 
-source(code_fp + "sstree_module.Rev")
+source(code_fp + "tree_module.Rev")
 if (use_bg) {
     source(code_fp + "bg_module.Rev")
     d_bg = readDiscreteCharacterData(bg_fn)

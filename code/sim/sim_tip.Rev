@@ -23,7 +23,7 @@ overwrite = true
 rescale = false
 
 # create and simulate under model
-source(code_fp + "sstree_module.Rev")
+source(code_fp + "tree_module.Rev")
 if (use_bg) {
 	source(code_fp + "bg_module.Rev")
 }

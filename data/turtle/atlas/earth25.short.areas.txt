@@ -1,0 +1,1 @@
+SAm_N,SAm_E,SAm_S,NAm_NW,NAm_SE,NAm_NE,NAm_SW,Grn,Eur,As_C,As_E,As_SE,As_NE,Afr_W,Afr_S,Afr_E,Afr_N,Aus_N,Aus_S,Ind,Mdg,Ant_W,Ant_E,Mly,NZ

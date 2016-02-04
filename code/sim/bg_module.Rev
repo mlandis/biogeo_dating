@@ -18,32 +18,18 @@ n_epochs       <- atlas_short.nEpochs()
 # biogeography epoch model #
 ############################
 
+# dispersal modes
 if (use_atlas) {
     beta_pr <- v(1,1,1)
-    b_base ~ dnDirichlet( beta_pr )
-    b_base.setValue(simplex(1000,10,1))
-    
-    b_short := b_base[1]
-    b_med   := b_base[2]
-    b_long  := b_base[3]
-    b := b_base
-    b_tmp := b_short + b_med + b_long
-
-    mv[mvi++] = mvSimplexElementScale(b_base, alpha=30., weight=10.0)
+    b ~ dnDirichlet( beta_pr )
+    b.setValue(simplex(1000,10,1))
+    mv[mvi++] = mvSimplexElementScale(b, alpha=30., weight=10.0)
 } else {
     b := simplex( [0.,0.,1.] )
-    b_short   := b[1]
-    b_med   := b[2]
-    b_long  := b[3]
-    b_tmp := b_short + b_med + b_long
 }
-
-
-# convert absolute ages to concentration prior
-ea_pr      <- atlas_short.epochTimes()
-for (i in 1:n_epochs) {
-    epoch_ages[i] := ea_pr[i]
-}
+b_short := b[1]
+b_med   := b[2]
+b_long  := b[3]
 
 
 # epoch rate matrices
@@ -81,26 +67,23 @@ for (i in 1:n_epochs) {
 	}
 }
 
+# epoch ages
+epoch_ages  <- atlas_short.epochTimes()
 
 # epoch clocks
-for (i in 1:n_epochs) {
-    epoch_rates[i] := 1.
-}
-
-for (i in 1:n_branches) {
-    brbgrate[i] <- 1.
-}
-
-for (i in 1:n_branches) {
-    br_bg_clock[i] := brbgrate[i] * clock_bg * b_tmp
-}
+epoch_rates <- rep(1., n_epochs)
 
 # epoch rate generator
 q_bg := fnEpoch(Q=rm_bg, times=epoch_ages, rates=epoch_rates)
 
 # ctmc
 rf <- bf_bg[1] 
-m_bg ~ dnPhyloCTMC(tree=tau,Q=q_bg,rootFrequencies=rf,branchRates=br_bg_clock,nSites=n_bg_sites,type="Standard")
+m_bg ~ dnPhyloCTMC(tree=tau,
+                   Q=q_bg,
+                   rootFrequencies=rf,
+                   branchRates=clock_bg,
+                   nSites=n_bg_sites,
+                   type="Standard")
 
 if (overwrite) {
 	writeNexus(m_bg, filename=bg_fn)

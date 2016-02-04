@@ -1,0 +1,69 @@
+# Rev script for earth25.short.files.txt
+fp = "/Users/mlandis/projects/mkatlas/code/"
+
+# area names
+n_areas = 25
+area_names = [
+              "SAm_N",
+              "SAm_E",
+              "SAm_S",
+              "NAm_NW",
+              "NAm_SE",
+              "NAm_NE",
+              "NAm_SW",
+              "Grn",
+              "Eur",
+              "As_C",
+              "As_E",
+              "As_SE",
+              "As_NE",
+              "Afr_W",
+              "Afr_S",
+              "Afr_E",
+              "Afr_N",
+              "Aus_N",
+              "Aus_S",
+              "Ind",
+              "Mdg",
+              "Ant_W",
+              "Ant_E",
+              "Mly",
+              "NZ"
+             ]
+
+# epoch times
+n_epochs = 26
+epoch_times = [
+              "450",
+              "430",
+              "400",
+              "350",
+              "300",
+              "280",
+              "240",
+              "200",
+              "170",
+              "160",
+              "150",
+              "120",
+              "110",
+              "100",
+              "90",
+              "85",
+              "75",
+              "65",
+              "50",
+              "30",
+              "25",
+              "20",
+              "13",
+              "0.1",
+              "0.02",
+              "0"
+             ]
+
+# filenames
+for (i in 1:n_epochs) {
+    atlas_mtx[i] <- readDataDelimitedFile(fp+"earth25.short.atlas.matrix."+i+".txt", type="Continuous", delimiter=",")
+    q_atlas[i] := fnFreeK(atlas_mtx[i])
+}

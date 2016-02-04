@@ -31,7 +31,7 @@ for (i in 1:n_species) {
         tip_ages[i] = 0.
     }
 }
-tau_true <- treeScale(tau_tmp, tau_rescale, tip_ages)
+tau_true <- fnTreeScale(tau_tmp, tau_rescale, tip_ages)
 
 # evol length
 evol ~ dnUnif(0,1000)
@@ -70,9 +70,9 @@ if (use_bg) {
 }
 
 # tree
-tau_unit ~ dnUniformTimeTree(origin=1., names=names)
+tau_unit ~ dnUniformTimeTree(rootAge=1., taxa=names)
 tau_unit.setValue( tau_tmp )
-tau := treeScale(scale=root_age, tree=tau_unit, tipAges=tip_ages)
+tau := fnTreeScale(scale=root_age, tree=tau_unit, tipAges=tip_ages)
 
 mv[mvi++] = mvNodeTimeSlideUniform(tau_unit, n_branches/3)
 mv[mvi++] = mvNodeTimeSlideBeta(tau_unit, delta=40.0, offset=2.0, tune=true, n_branches/3)
