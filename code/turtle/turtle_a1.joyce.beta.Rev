@@ -6,4 +6,4 @@ use_atlas       = true
 use_calib_joyce = true
 use_beta_prior  = true
 
-source("turtle/quick_turtle.Rev")
+source("quick_turtle.Rev")

@@ -4,4 +4,4 @@ rv              = floor(runif(1,100000,999999)[1])
 base_str        = base_str + "." + rv
 use_atlas       = false 
 
-source("turtle/quick_turtle.Rev")
+source("quick_turtle.Rev")

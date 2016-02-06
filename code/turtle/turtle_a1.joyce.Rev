@@ -5,4 +5,4 @@ base_str        = base_str + "." + rv
 use_atlas       = true
 use_calib_joyce = true
 
-source("turtle/quick_turtle.Rev")
+source("quick_turtle.Rev")
