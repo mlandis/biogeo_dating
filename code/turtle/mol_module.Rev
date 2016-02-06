@@ -17,9 +17,7 @@ n_mol_elements <- n_mol_states*(n_mol_states-1)/2
 ucln_sd ~ dnExp(0.1)
 ucln_sd.setValue(rexp(1,5)[1])
 #ucln_sd.setValue(0.1)
-mv[mvi++] = mvScale(ucln_sd, lambda=0.2, weight=20.0)
-mv[mvi++] = mvScale(ucln_sd, lambda=0.1, weight=20.0)
-mv[mvi++] = mvScale(ucln_sd, lambda=1., weight=10.0)
+mv[mvi++] = mvScale(ucln_sd, lambda=0.2, weight=10.0)
 ucln_mean := ln( clock_mol ) - ucln_sd*ucln_sd*0.5
 
 # branch rates draw from a discretized Lognormal (k=32)
@@ -57,12 +55,12 @@ for (i in 1:n_parts)
     # exchangeability rates
     er_mol_pr[i] <- rep(1, n_mol_elements)
     er_mol[i] ~ dnDirichlet(er_mol_pr[i])
-    mv[mvi++] = mvSimplexElementScale(x=er_mol[i], alpha=30.0, tune=true, weight=20.0)
+    mv[mvi++] = mvSimplexElementScale(x=er_mol[i], alpha=20.0, tune=true, weight=10.0)
 
     # base frequencies
     bf_mol_pr[i] <- rep(1, n_mol_states)
     bf_mol[i] ~ dnDirichlet(bf_mol_pr[i])
-    mv[mvi++] = mvSimplexElementScale(x=bf_mol[i], alpha=30.0, tune=true, weight=20.0)
+    mv[mvi++] = mvSimplexElementScale(x=bf_mol[i], alpha=20.0, tune=true, weight=10.0)
 
     # rate matrix
     Q_mol[i] := fnGTR(exchangeRates=er_mol[i], baseFrequencies=bf_mol[i])

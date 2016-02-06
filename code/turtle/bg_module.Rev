@@ -41,7 +41,6 @@ if (use_atlas) {
   
     # add parameter updates
     mv[mvi++] = mvSimplexElementScale(b, alpha=20., weight=10.0)
-    mv[mvi++] = mvSimplexElementScale(b, alpha=30., weight=20.0)
    
 } else {
     # long-distance dispersal only, i.e. the -G model

@@ -18,10 +18,9 @@ tip_ages <- rep(0., n_species)
 # evol length
 evol ~ dnUnif(0,1000)
 evol.setValue( runif(1,0,10)[1] )
-mv[mvi++] = mvScale(evol, tune=true, lambda=0.1, weight=40)
-mv[mvi++] = mvScale(evol, tune=false, lambda=0.5, weight=30)
-mv[mvi++] = mvScale(evol, tune=false, lambda=2.0, weight=20)
-mv[mvi++] = mvSlide(evol, tune=true, delta=0.1, weight=20)
+mv[mvi++] = mvScale(evol, tune=true, lambda=0.1, weight=10)
+mv[mvi++] = mvScale(evol, tune=false, lambda=1.0, weight=10)
+mv[mvi++] = mvSlide(evol, tune=true, delta=0.1, weight=10)
 
 # ages, clocks
 max_age <- 540
@@ -31,16 +30,15 @@ if (exists("use_calib_joyce")) {
     root_age ~ dnUnif(0,max_age)
 }
 root_age.setValue(tau_rescale)
-mv[mvi++] = mvScale(root_age, tune=true, lambda=0.2, weight=20)
-mv[mvi++] = mvScale(root_age, tune=false, lambda=2.0, weight=20)
-mv[mvi++] = mvScale(root_age, tune=false, lambda=5.0, weight=20)
-mv[mvi++] = mvSlide(root_age, tune=false, delta=2.0, weight=20)
+mv[mvi++] = mvScale(root_age, tune=true, lambda=0.1, weight=10)
+mv[mvi++] = mvScale(root_age, tune=false, lambda=1.0, weight=10)
+mv[mvi++] = mvSlide(root_age, tune=false, delta=2.0, weight=10)
 
 # want avg subst rate of 10^-7 / site / yr
 # e.g. 10^-1 / site / Myr
 s_bg ~ dnUnif(-3,3)
 s_bg.setValue(runif(1,-1,1)[1])
-mv[mvi++] = mvSlide(s_bg, weight=n_branches/30)
+mv[mvi++] = mvSlide(s_bg, weight=10)
 
 # determine molecular,biogeographic clocks
 clock_mol    := evol / root_age
@@ -56,5 +54,5 @@ tau_unit.setValue( tau_tmp )
 tau := fnTreeScale(scale=root_age, tree=tau_unit, tipAges=tip_ages)
 
 # update branch lengths
-mv[mvi++] = mvNodeTimeSlideUniform(tau_unit, weight=n_branches*2)
+mv[mvi++] = mvNodeTimeSlideUniform(tau_unit, weight=n_branches)
 
