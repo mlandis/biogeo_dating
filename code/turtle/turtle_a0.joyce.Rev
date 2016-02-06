@@ -2,7 +2,6 @@ base_tree_fn    = "turtle.185.tre"
 base_str        = "turtle.g0.joyce"
 rv              = floor(runif(1,100000,999999)[1])
 base_str        = base_str + "." + rv
-
 use_atlas       = false
 use_calib_joyce = true
 

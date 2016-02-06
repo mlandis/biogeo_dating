@@ -58,9 +58,3 @@ tau := fnTreeScale(scale=root_age, tree=tau_unit, tipAges=tip_ages)
 # update branch lengths
 mv[mvi++] = mvNodeTimeSlideUniform(tau_unit, weight=n_branches*2)
 
-# monitor clade ages
-clade_pleuro = clade("Pelomedusa_subrufa","Chelodina_longicollis")
-age_pleuro := tmrca(tau, clade_pleuro)
-clade_crypto = clade("Carettochelys_insculpta","Gopherus_polyphemus")
-age_crypto := tmrca(tau, clade_crypto)
-
