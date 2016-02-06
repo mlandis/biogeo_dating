@@ -45,4 +45,4 @@ Click the Play button
 
 Enjoy!
 
-![gplates](https://figshare.com/s/2a8329e06c6d11e587bd06ec4b8d1f61)
+![gplates](https://raw.githubusercontent.com/mlandis/biogeo_dating/master/gplates/paleo_dispersal_graph_landis15.gif)
