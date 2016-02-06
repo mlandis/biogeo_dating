@@ -10,4 +10,5 @@ mdl = model(tau)
 
 # mcmc
 my_mcmc = mcmc(mdl,mn,mv)
-my_mcmc.run(25000)
+#my_mcmc.burnin(10000,100)
+my_mcmc.run(50000)
