@@ -1,5 +1,5 @@
 # monitors
-mn[mni++] = mnScreen(height_mol, height_bg, root_age, b, printgen=1)
+mn[mni++] = mnScreen(clock_mol, clock_bg, height_mol, height_bg, root_age, printgen=1)
 mn[mni++] = mnFile(filename=out_fp+out_str+".params.txt", height_mol, height_bg, root_age, b_short, b_med, b_long, printgen=1)
 mn[mni++] = mnModel(filename=out_fp+out_str+".model.txt",printgen=5)
 mn[mni++] = mnFile(tau,filename=out_fp+out_str+".tre",printgen=5)
