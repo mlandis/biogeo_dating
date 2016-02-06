@@ -51,6 +51,7 @@ if (use_atlas) {
 b_short := b[1]
 b_med   := b[2]
 b_long  := b[3]
+b_tmp   := b_short + b_med + b_long
 
 # read in the epoch adjacency matrices
 sf_atlas_short <- simplex(rep(1.,n_bg_states))
