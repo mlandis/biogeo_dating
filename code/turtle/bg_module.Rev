@@ -93,7 +93,10 @@ for (i in 1:n_epochs) {
 }
 
 # epoch clocks
-epoch_rates <- rep(1., n_epochs)
+for (i in 1:n_epochs) {
+    epoch_rates[i] := 1. * b_tmp
+}
+#epoch_rates <- rep(1., n_epochs)
 
 # epoch rate generator
 q_bg := fnEpoch(Q=rm_bg, times=epoch_ages, rates=epoch_rates)
