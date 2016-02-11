@@ -40,8 +40,10 @@ if (use_atlas) {
     b ~ dnDirichlet( beta_pr )
   
     # add parameter updates
-    mv[mvi++] = mvSimplexElementScale(b, alpha=10., weight=10.0)
-    mv[mvi++] = mvSimplexElementScale(b, alpha=30., weight=10.0)
+    #mv[mvi++] = mvSimplexElementScale(b, alpha=10., weight=10.0)
+    #mv[mvi++] = mvSimplexElementScale(b, alpha=30., weight=10.0)
+    mv[mvi++] = mvSimplex(b, alpha=20., numCats=1, offset=2., weight=10.0)
+    mv[mvi++] = mvSimplex(b, alpha=30., numCats=1, offset=2., weight=10.0)
    
 } else {
     # long-distance dispersal only, i.e. the -G model
