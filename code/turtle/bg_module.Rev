@@ -38,6 +38,7 @@ if (use_atlas) {
     }
     # create the dispersal mode prior
     b ~ dnDirichlet( beta_pr )
+    b.setValue(simplex(1,1,1))
   
     # add parameter updates
     #mv[mvi++] = mvSimplexElementScale(b, alpha=10., weight=10.0)
