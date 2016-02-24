@@ -25,7 +25,7 @@ mv[mvi++] = mvSlide(evol, tune=true, delta=0.1, weight=10)
 # ages, clocks
 max_age <- 540
 if (exists("use_calib_joyce")) {
-    root_age ~ dnUnif(151.7, 251.4)
+    root_age ~ dnUnif(155.6, 251.4)
 } else {
     root_age ~ dnUnif(0,max_age)
 }
