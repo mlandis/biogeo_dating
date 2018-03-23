@@ -4,17 +4,17 @@
 ########
 
 # read in vector of ages when epochs end (including 0, at present)
-epoch_ages <- readDataDelimitedFile(in_fp+"atlas/earth25.short.times.txt", type="Continuous", delimiter=",")[1]
+epoch_ages <- readDataDelimitedFile(file=in_fp+"atlas/earth25.short.times.txt", delimiter=",", header=false)[1]
 n_epochs       <- epoch_ages.size()
 
 # read in series of short-distance adjacency matrices
 for (i in 1:n_epochs) {
-    atlas_mtx_short[i] <- readDataDelimitedFile(in_fp+"atlas/earth25.short.atlas.matrix."+i+".txt", type="Continuous", delimiter=",")
+    atlas_mtx_short[i] <- readDataDelimitedFile(file=in_fp+"atlas/earth25.short.atlas.matrix."+i+".txt", delimiter=",", header=false)
 }
 
 # read in series of medium-distance adjacency matrices
 for (i in 1:n_epochs) {
-    atlas_mtx_med[i] <- readDataDelimitedFile(in_fp+"atlas/earth25.med.atlas.matrix."+i+".txt", type="Continuous", delimiter=",")
+    atlas_mtx_med[i] <- readDataDelimitedFile(file=in_fp+"atlas/earth25.med.atlas.matrix."+i+".txt", delimiter=",", header=false)
 }
 
 # read in biogeographic character matrix
@@ -65,8 +65,20 @@ er_atlas_long <- simplex(rep(1.,n_bg_elements))
 
 # convert each epoch into upper triangle for GTR
 for (i in 1:n_epochs) {
-    er_atlas_short_sx[i] <- vectorFlatten(er_atlas_short_mtx[i])
-    er_atlas_med_sx[i]   <- vectorFlatten(er_atlas_med_mtx[i])
+    # MJL 180323: This code does not work with RevBayes version 1.0.7
+    #er_atlas_short_sx[i] <- vectorFlatten(er_atlas_short_mtx[i])
+    #er_atlas_med_sx[i]   <- vectorFlatten(er_atlas_med_mtx[i])
+    tmp_idx = 1
+    print("Processing epoch "+i+" of "+n_epochs)
+    for (j in 1:n_bg_states) {
+        for (k in j:n_bg_states) {
+            if (j != k) {
+                er_atlas_short_sx[i][tmp_idx] = er_atlas_short_mtx[i][j][k]
+                er_atlas_med_sx[i][tmp_idx] = er_atlas_med_mtx[i][j][k]
+                tmp_idx += 1
+            }
+        }
+    }
 }
 
 # construct rate matrices per epoch
@@ -91,7 +103,7 @@ for (i in 1:n_epochs) {
 	} else {
         # dispersal rates between all areas are equal under the -G model
 		bf_bg[i] <- sf_atlas_short
-		rm_bg[i] := fnJC(numStates=n_bg_states)
+		rm_bg[i] := fnJC(num_states=n_bg_states)
 	}
 }
 
